@@ -38,7 +38,34 @@
     function showPosition(position) {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
-        document.getElementById('location').textContent = `Latitude: ${latitude} | Longitude: ${longitude}`;
+
+        // Custom location mapping
+        let locationName = "Unknown Location";
+
+        // Example: MIC Jerudong (rough estimate)
+        if (latitude >= 4.930 && latitude <= 4.940 && longitude >= 114.870 && longitude <= 114.880) {
+            locationName = "MIC Jerudong";
+        }
+        // Example: Gadong (rough estimate)
+        else if (latitude >= 4.890 && latitude <= 4.900 && longitude >= 114.910 && longitude <= 114.920) {
+            locationName = "Gadong";
+        } else {
+            // Use Nominatim API as a fallback for other locations
+            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`)
+                .then(response => response.json())
+                .then(data => {
+                    locationName = data.display_name || "Location name not available";
+                    document.getElementById('location').textContent = `Location: ${locationName}`;
+                })
+                .catch(error => {
+                    console.error('Error fetching location name:', error);
+                    document.getElementById('location').textContent = "Unable to fetch location name.";
+                });
+            return; // Exit early since the fetch will update the location
+        }
+
+        // Display the location name
+        document.getElementById('location').textContent = `Location: ${locationName}`;
     }
 
     function showError(error) {
