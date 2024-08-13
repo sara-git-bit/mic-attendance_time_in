@@ -21,6 +21,7 @@
 
 <h1>Current Date and Time</h1>
 <div id="datetime">Loading...</div>
+<div id="location">Fetching location...</div>
 
 <script>
     function updateDateTime() {
@@ -28,6 +29,12 @@
         const date = now.toLocaleDateString(); // Get current date
         const time = now.toLocaleTimeString(); // Get current time
         document.getElementById('datetime').textContent = `Date: ${date} | Time: ${time}`;
+    }
+
+       function showPosition(position) {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+        document.getElementById('location').textContent = `Latitude: ${latitude} | Longitude: ${longitude}`;
     }
 
     // Update the date and time every second
